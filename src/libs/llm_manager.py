@@ -44,6 +44,7 @@ from src.utils.constants import (
     MODEL_NAME,
     OLLAMA,
     OPENAI,
+    O3_MINI,
     PERPLEXITY,
     OPTIONS,
     OUTPUT_TOKENS,
@@ -181,6 +182,20 @@ class HuggingFaceModel(AIModel):
         return response
 
 
+class O3MiniModel(AIModel):
+    def __init__(self, api_key: str, llm_model: str):
+        from langchain_openai import ChatOpenAI
+
+        self.model = ChatOpenAI(
+            model_name=llm_model, openai_api_key=api_key, temperature=0.4
+        )
+
+    def invoke(self, prompt: str) -> BaseMessage:
+        logger.debug("Invoking O3 Mini API")
+        response = self.model.invoke(prompt)
+        return response
+
+
 class AIAdapter:
     def __init__(self, config: dict, api_key: str):
         self.model = self._create_model(config, api_key)
@@ -205,6 +220,8 @@ class AIAdapter:
             return HuggingFaceModel(api_key, llm_model)
         elif llm_model_type == PERPLEXITY:
             return PerplexityModel(api_key, llm_model)
+        elif llm_model_type == O3_MINI:
+            return O3MiniModel(api_key, llm_model)
         else:
             raise ValueError(f"Unsupported model type: {llm_model_type}")
 
