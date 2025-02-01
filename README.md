@@ -123,18 +123,20 @@ This file contains sensitive information. Never share or commit this file to ver
     OpenAI will update your account automatically, but it might take some time, ranging from a couple of hours to a few days.  
     You can find more about your organization's limits on the [official page](https://platform.openai.com/settings/organization/limits).
   - For obtaining Gemini API key visit [Google AI for Devs](https://ai.google.dev/gemini-api/docs/api-key)
+  - For obtaining O3 Mini API key, follow the instructions provided by the O3 Mini API provider.
 
 
 #### 1.1 config.py - Customize LLM model endpoint
 
 - `LLM_MODEL_TYPE`:
-  - Choose the model type, supported: openai / ollama / claude / gemini
+  - Choose the model type, supported: openai / ollama / claude / gemini / o3_mini
 - `LLM_MODEL`:
   - Choose the LLM model, currently supported:
     - openai: gpt-4o
     - ollama: llama2, mistral:v0.3
     - claude: any model
     - gemini: any model
+    - o3_mini: any model
 - `LLM_API_URL`:
   >The `LLM_API_URL` field is only required for Ollama
   - Link of the API endpoint for the LLM model

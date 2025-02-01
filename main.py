@@ -169,7 +169,7 @@ class ConfigValidator:
     def validate_secrets(secrets_yaml_path: Path) -> str:
         """Validate the secrets YAML file and retrieve the LLM API key."""
         secrets = ConfigValidator.load_yaml(secrets_yaml_path)
-        mandatory_secrets = ["llm_api_key"]
+        mandatory_secrets = ["llm_api_key", "o3_mini_api_key"]
 
         for secret in mandatory_secrets:
             if secret not in secrets:
@@ -178,7 +178,7 @@ class ConfigValidator:
             if not secrets[secret]:
                 raise ConfigError(f"Secret '{secret}' cannot be empty in {secrets_yaml_path}")
 
-        return secrets["llm_api_key"]
+        return secrets["llm_api_key"], secrets["o3_mini_api_key"]
 
 
 class FileManager:
@@ -217,7 +217,7 @@ class FileManager:
         return uploads
 
 
-def create_cover_letter(parameters: dict, llm_api_key: str):
+def create_cover_letter(parameters: dict, llm_api_key: str, o3_mini_api_key: str):
     """
     Logic to create a CV.
     """
@@ -304,7 +304,7 @@ def create_cover_letter(parameters: dict, llm_api_key: str):
         raise
 
 
-def create_resume_pdf_job_tailored(parameters: dict, llm_api_key: str):
+def create_resume_pdf_job_tailored(parameters: dict, llm_api_key: str, o3_mini_api_key: str):
     """
     Logic to create a CV.
     """
@@ -389,7 +389,7 @@ def create_resume_pdf_job_tailored(parameters: dict, llm_api_key: str):
         raise
 
 
-def create_resume_pdf(parameters: dict, llm_api_key: str):
+def create_resume_pdf(parameters: dict, llm_api_key: str, o3_mini_api_key: str):
     """
     Logic to create a CV.
     """
@@ -468,7 +468,7 @@ def create_resume_pdf(parameters: dict, llm_api_key: str):
         raise
 
         
-def handle_inquiries(selected_actions: List[str], parameters: dict, llm_api_key: str):
+def handle_inquiries(selected_actions: List[str], parameters: dict, llm_api_key: str, o3_mini_api_key: str):
     """
     Decide which function to call based on the selected user actions.
 
@@ -480,15 +480,15 @@ def handle_inquiries(selected_actions: List[str], parameters: dict, llm_api_key:
         if selected_actions:
             if "Generate Resume" == selected_actions:
                 logger.info("Crafting a standout professional resume...")
-                create_resume_pdf(parameters, llm_api_key)
+                create_resume_pdf(parameters, llm_api_key, o3_mini_api_key)
                 
             if "Generate Resume Tailored for Job Description" == selected_actions:
                 logger.info("Customizing your resume to enhance your job application...")
-                create_resume_pdf_job_tailored(parameters, llm_api_key)
+                create_resume_pdf_job_tailored(parameters, llm_api_key, o3_mini_api_key)
                 
             if "Generate Tailored Cover Letter for Job Description" == selected_actions:
                 logger.info("Designing a personalized cover letter to enhance your job application...")
-                create_cover_letter(parameters, llm_api_key)
+                create_cover_letter(parameters, llm_api_key, o3_mini_api_key)
 
         else:
             logger.warning("No actions selected. Nothing to execute.")
@@ -533,7 +533,7 @@ def main():
 
         # Validate configuration and secrets
         config = ConfigValidator.validate_config(config_file)
-        llm_api_key = ConfigValidator.validate_secrets(secrets_file)
+        llm_api_key, o3_mini_api_key = ConfigValidator.validate_secrets(secrets_file)
 
         # Prepare parameters
         config["uploads"] = FileManager.get_uploads(plain_text_resume_file)
@@ -543,7 +543,7 @@ def main():
         selected_actions = prompt_user_action()
 
         # Handle selected actions and execute them
-        handle_inquiries(selected_actions, config, llm_api_key)
+        handle_inquiries(selected_actions, config, llm_api_key, o3_mini_api_key)
 
     except ConfigError as ce:
         logger.error(f"Configuration error: {ce}")

@@ -20,3 +20,6 @@ LLM_MODEL_TYPE = 'openai'
 LLM_MODEL = 'gpt-4o-mini'
 # Only required for OLLAMA models
 LLM_API_URL = ''
+
+# Configuration setting for "o3 mini api key"
+O3_MINI_API_KEY = 'your-o3-mini-api-key-here'

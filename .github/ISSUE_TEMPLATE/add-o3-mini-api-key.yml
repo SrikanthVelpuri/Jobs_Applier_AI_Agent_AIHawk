@@ -1,0 +1,32 @@
+name: Add O3 Mini API Key
+description: Request to add O3 Mini API Key to the project.
+title: "[O3 MINI API KEY]: <Provide a clear, descriptive title>"
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the following information to help us add the O3 Mini API Key to the project.
+
+  - type: input
+    id: api_key
+    attributes:
+      label: O3 Mini API Key
+      description: Provide the O3 Mini API Key to be added.
+      placeholder: "Enter the O3 Mini API Key..."
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Reason for adding the O3 Mini API Key
+      description: Explain why the O3 Mini API Key needs to be added to the project.
+      placeholder: "Describe the reason for adding the O3 Mini API Key..."
+
+  - type: input
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context or information related to the O3 Mini API Key.
+      placeholder: "Any additional information..."
